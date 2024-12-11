@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "skipLibCheck": true,
+        "strict": true
+    },
+    "include": [
+		"scripts/**/*",
+		"src/**/*"
+	]
+}
