@@ -5,6 +5,7 @@
         "@types/node": "^22.10.2",
         "@vitest/coverage-v8": "^2.1.8",
         "chalk": "^5.3.0",
+        "esbuild": "^0.24.0",
         "eslint": "^9.16.0",
         "globals": "^15.13.0",
         "prettier": "^3.4.2",
@@ -17,7 +18,7 @@
     "license": "MIT",
     "main": "dist/index.js",
     "scripts": {
-        "build": "rm -rf dist && tsc -b tsconfig.src.json && tsc-alias -p tsconfig.src.json",
+        "build": "rm -rf dist && node esbuild.config.mjs",
         "deploy": "yarn build && ./scripts/deploy.sh",
         "dev": "tsx watch --tsconfig tsconfig.src.json scripts/dev-server.ts",
         "test:coverage": "rm -rf coverage && vitest run --coverage",
@@ -25,8 +26,5 @@
     },
     "type": "module",
     "version": "1.0.0",
-    "dependencies": {
-        "lodash": "^4.17.21",
-        "tsc-alias": "^1.8.10"
-    }
+    "dependencies": {}
 }
