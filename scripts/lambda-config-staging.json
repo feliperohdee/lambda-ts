@@ -1,6 +1,6 @@
 {
 	"FunctionName": "lambda-ts",
-    "Description": "API (Production)",
+    "Description": "API (Staging)",
     "Environment": {
         "Variables": {
             "NODE_ENV": "staging"
