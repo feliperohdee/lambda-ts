@@ -1,14 +1,21 @@
 {
-    "files": [],
-    "references": [
-		{
-            "path": "./tsconfig.dev.json"
+	"compilerOptions": {
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+		"noEmit": true,
+        "paths": {
+            "@/*": ["./src/*"]
         },
-		{
-            "path": "./tsconfig.src.json"
-        },
-        {
-            "path": "./tsconfig.spec.json"
-        }
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ESNext"
+    },
+	"include": [
+		"scripts/**/*.ts",
+		"src/**/*.ts"
+	],
+    "exclude": [
+        "node_modules"
     ]
 }

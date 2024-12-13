@@ -18,7 +18,7 @@
     "license": "MIT",
     "main": "dist/index.js",
     "scripts": {
-        "build": "rm -rf dist && node esbuild.config.mjs",
+        "build": "rm -rf dist && tsc && node esbuild.config.mjs",
         "deploy": "yarn build && ./scripts/deploy.sh",
         "dev": "tsx watch --tsconfig tsconfig.src.json scripts/dev-server.ts",
         "test:coverage": "rm -rf coverage && vitest run --coverage",
