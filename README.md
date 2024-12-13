@@ -1,10 +1,11 @@
 # 🚀 Lambda TypeScript Template
 
-A modern, batteries-included template for AWS Lambda functions using TypeScript, complete with local development server, testing, and deployment scripts.
+A modern template for AWS Lambda functions using TypeScript, built with esbuild for fast and efficient bundling, with local development server, testing, and deployment scripts.
 
 ## ✨ Features
 
 - **TypeScript-First**: Built with TypeScript for rock-solid type safety and modern JavaScript features
+- **Fast Builds**: Lightning-fast compilation with esbuild
 - **Development Server**: Local development environment with hot-reload and request logging
 - **Testing**: Configured with Vitest for fast, reliable testing
 - **Code Quality**: ESLint and Prettier configurations for consistent code style
@@ -93,10 +94,7 @@ yarn deploy --config
 
 - `.prettierrc` - Prettier configuration
 - `eslint.config.js` - ESLint configuration
-- `tsconfig.json` - TypeScript configuration (references)
-- `tsconfig.src.json` - Source build configuration
-- `tsconfig.spec.json` - Test configuration
-- `tsconfig.dev.json` - Development configuration
+- `tsconfig.json` - TypeScript configuration
 - `vitest.config.ts` - Vitest test runner configuration
 
 ## 🔧 Environment Configuration
