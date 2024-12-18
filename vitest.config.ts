@@ -8,6 +8,8 @@ export default defineConfig({
 			reporter: ['text', 'html'],
 			exclude: [
 				'dist',
+				'esbuild.config.mts',
+				'eslint.config.js',
 				'scripts',
 				'src/**/*.spec.ts',
 				'vitest.config.ts'
