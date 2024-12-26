@@ -6,6 +6,7 @@ FUNCTION_NAME="lambda-ts"
 HANDLER="index.handler"
 LAMBDA_MEMORY=128
 LAMBDA_TIMEOUT=30
+PROFILE=""
 REGION="us-east-1"
 ROLE_ARN="arn:aws:iam::427766509767:role/Lambda"
 RUNTIME="nodejs22.x"
@@ -17,19 +18,19 @@ STAGING=false
 
 for arg in "$@"
 do
-  	if [[ "$arg" == "--config" ]]; then
-    	CONFIG_ONLY=true
-  	elif [[ "$arg" == "--staging" ]]; then
-    	STAGING=true
-	elif [[ "$arg" =~ ^--profile=(.+)$ ]]; then
+    if [[ "$arg" == "--config" ]]; then
+        CONFIG_ONLY=true
+    elif [[ "$arg" == "--staging" ]]; then
+        STAGING=true
+    elif [[ "$arg" =~ ^--profile=(.+)$ ]]; then
         PROFILE="--profile ${BASH_REMATCH[1]}"
     fi
 done
 
 # Adjust function name and description for staging
 if [[ "$STAGING" == true ]]; then
-	FUNCTION_NAME="${FUNCTION_NAME}-staging"
-	DESCRIPTION="${DESCRIPTION} (Staging)"
+    FUNCTION_NAME="${FUNCTION_NAME}-staging"
+    DESCRIPTION="${DESCRIPTION} (Staging)"
 fi
 
 # Function to check if Lambda exists
@@ -54,7 +55,7 @@ create_lambda_function() {
         --runtime ${RUNTIME} \
         --timeout ${LAMBDA_TIMEOUT} \
         --zip-file fileb://${ZIP_FILE} \
-		${PROFILE}
+        ${PROFILE}
 }
 
 # Function to configure Lambda function
@@ -73,7 +74,7 @@ configure_lambda_function() {
         --role ${ROLE_ARN} \
         --runtime ${RUNTIME} \
         --timeout ${LAMBDA_TIMEOUT} \
-		${PROFILE}
+        ${PROFILE}
 }
 
 # Function to update Lambda code
@@ -83,7 +84,7 @@ update_lambda_code() {
         --function-name ${FUNCTION_NAME} \
         --zip-file fileb://${ZIP_FILE} \
         --region ${REGION} \
-		${PROFILE}
+        ${PROFILE}
 }
 
 # Function to build TypeScript project
