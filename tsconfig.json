@@ -1,21 +1,16 @@
 {
 	"compilerOptions": {
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "commonjs",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "commonjs",
 		"noEmit": true,
-        "paths": {
-            "@/*": ["./src/*"]
-        },
-        "skipLibCheck": true,
-        "strict": true,
-        "target": "ESNext"
-    },
-	"include": [
-		"scripts/**/*.ts",
-		"src/**/*.ts"
-	],
-    "exclude": [
-        "node_modules"
-    ]
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "ESNext"
+	},
+	"include": ["scripts/**/*.ts", "src/**/*.ts"],
+	"exclude": ["node_modules"]
 }

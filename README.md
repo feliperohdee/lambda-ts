@@ -36,6 +36,7 @@ yarn dev
 ```
 
 This will start a local server at `http://localhost:3000` with:
+
 - 🔄 Hot reload support
 - 📝 Pretty request logging
 - 🚦 Request timing
@@ -97,16 +98,10 @@ yarn deploy --config
 - `tsconfig.json` - TypeScript configuration
 - `vitest.config.ts` - Vitest test runner configuration
 
-## 🔧 Environment Configuration
-
-The project supports multiple environments through separate Lambda configuration files:
-
-- `lambda-config.json` - Production configuration
-- `lambda-config-staging.json` - Staging configuration
-
 ## 📚 Available Scripts
 
 - `yarn dev` - Start development server
+- `yarn line` - Apply Prettier and ESLint to the project
 - `yarn test` - Run tests
 - `yarn test:coverage` - Generate test coverage report
 - `yarn build` - Build the project

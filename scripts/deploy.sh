@@ -1,41 +1,126 @@
 #!/bin/bash
 
+# Configuration
+DESCRIPTION="TypeScript Lambda Function"
 FUNCTION_NAME="lambda-ts"
-DEPLOYMENT_PACKAGE="deployment.zip"
-CONFIG_FILE="lambda-config"
+HANDLER="index.handler"
+LAMBDA_MEMORY=128
+LAMBDA_TIMEOUT=30
+REGION="us-east-1"
+ROLE_ARN="arn:aws:iam::427766509767:role/Lambda"
+RUNTIME="nodejs22.x"
+ZIP_FILE="function.zip"
 
+# Parse command line arguments
 CONFIG_ONLY=false
 STAGING=false
 
 for arg in "$@"
 do
-  if [[ "$arg" == "--config" ]]; then
-    CONFIG_ONLY=true
-  elif [[ "$arg" == "--staging" ]]; then
-    STAGING=true
-  fi
+  	if [[ "$arg" == "--config" ]]; then
+    	CONFIG_ONLY=true
+  	elif [[ "$arg" == "--staging" ]]; then
+    	STAGING=true
+  	fi
 done
 
+# Adjust function name and description for staging
 if [[ "$STAGING" == true ]]; then
-  FUNCTION_NAME="${FUNCTION_NAME}-staging"
-  CONFIG_FILE="${CONFIG_FILE}-staging"
+	FUNCTION_NAME="${FUNCTION_NAME}-staging"
+	DESCRIPTION="${DESCRIPTION} (Staging)"
 fi
 
-if [[ "$CONFIG_ONLY" == true ]]; then
-  aws lambda update-function-configuration \
-    --cli-input-json file://scripts/$CONFIG_FILE.json
-else
-  yarn build
+# Function to check if Lambda exists
+lambda_exists() {
+    aws lambda get-function --function-name ${FUNCTION_NAME} --region ${REGION} &> /dev/null
+}
 
-  cd dist
-  zip -r ../scripts/$DEPLOYMENT_PACKAGE .
-  cd ..
+# Function to create new Lambda function
+create_lambda_function() {
+    echo "Creating new Lambda function..."
+    aws lambda create-function \
+        --description "${DESCRIPTION}" \
+        --environment '{
+            "Variables": {
+                "NODE_ENV": "'$(if [[ "$STAGING" == true ]]; then echo "staging"; else echo "production"; fi)'"
+            }
+        }' \
+        --function-name ${FUNCTION_NAME} \
+        --handler ${HANDLER} \
+        --memory-size ${LAMBDA_MEMORY} \
+        --role ${ROLE_ARN} \
+        --runtime ${RUNTIME} \
+        --timeout ${LAMBDA_TIMEOUT} \
+        --zip-file fileb://${ZIP_FILE}
+}
 
-  aws lambda update-function-code \
-    --function-name $FUNCTION_NAME \
-    --zip-file fileb://scripts/$DEPLOYMENT_PACKAGE
+# Function to configure Lambda function
+configure_lambda_function() {
+    echo "Updating Lambda configuration..."
+    aws lambda update-function-configuration \
+        --description "${DESCRIPTION}" \
+        --environment '{
+            "Variables": {
+                "NODE_ENV": "'$(if [[ "$STAGING" == true ]]; then echo "staging"; else echo "production"; fi)'"
+            }
+        }' \
+        --function-name ${FUNCTION_NAME} \
+        --handler ${HANDLER} \
+        --memory-size ${LAMBDA_MEMORY} \
+        --role ${ROLE_ARN} \
+        --runtime ${RUNTIME} \
+        --timeout ${LAMBDA_TIMEOUT}
+}
 
-  rm -f ./scripts/$DEPLOYMENT_PACKAGE
+# Function to update Lambda code
+update_lambda_code() {
+    echo "Updating Lambda function code..."
+    aws lambda update-function-code \
+        --function-name ${FUNCTION_NAME} \
+        --zip-file fileb://${ZIP_FILE} \
+        --region ${REGION}
+}
+
+# Function to build TypeScript project
+build_project() {
+    echo "Building TypeScript project..."
+    yarn build
+}
+
+# Function to create deployment package
+create_deployment_package() {
+    echo "Creating deployment package..."
+    cd dist
+    zip -r ../${ZIP_FILE} .
+    cd ..
+}
+
+# Function to clean up temporary files
+cleanup() {
+    echo "Cleaning up..."
+    rm -f ${ZIP_FILE}
+}
+
+# Function to deploy Lambda
+deploy_lambda() {
+    if lambda_exists; then
+        echo "Updating existing Lambda function..."
+        update_lambda_code
+    else
+        echo "Creating new Lambda function..."
+        create_lambda_function
+    fi
+}
+
+# Main execution
+if [ "$CONFIG_ONLY" = true ]; then
+    configure_lambda_function
+    exit 0
 fi
+
+build_project
+create_deployment_package
+deploy_lambda
+cleanup
 
 echo "Done! 🚀"

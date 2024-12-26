@@ -1,30 +1,30 @@
 {
-    "name": "lambda-ts",
-    "devDependencies": {
-        "@types/aws-lambda": "^8.10.146",
-        "@types/node": "^22.10.2",
-        "@vitest/coverage-v8": "^2.1.8",
-        "chalk": "^5.3.0",
-        "esbuild": "^0.24.0",
-        "eslint": "^9.16.0",
-        "globals": "^15.13.0",
-        "prettier": "^3.4.2",
-        "tsconfig-paths": "^4.2.0",
-        "tsx": "^4.19.2",
-        "typescript": "^5.7.2",
-        "typescript-eslint": "^8.18.0",
-        "vitest": "^2.1.8"
-    },
-    "license": "MIT",
-    "main": "dist/index.js",
-    "scripts": {
-        "build": "rm -rf dist && tsc && node esbuild.config.mjs",
-        "deploy": "yarn build && ./scripts/deploy.sh",
-        "dev": "tsx watch scripts/dev-server.ts",
-        "test:coverage": "rm -rf coverage && vitest run --coverage",
-        "test": "vitest"
-    },
-    "type": "module",
-    "version": "1.0.0",
-    "dependencies": {}
+	"name": "lambda-ts",
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.146",
+		"@types/node": "^22.10.2",
+		"@vitest/coverage-v8": "^2.1.8",
+		"chalk": "^5.3.0",
+		"esbuild": "^0.24.0",
+		"eslint": "^9.16.0",
+		"globals": "^15.13.0",
+		"prettier": "^3.4.2",
+		"tsconfig-paths": "^4.2.0",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2",
+		"typescript-eslint": "^8.18.0",
+		"vitest": "^2.1.8"
+	},
+	"license": "MIT",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "rm -rf dist && tsc && node esbuild.config.mjs",
+		"lint": "prettier --write . && eslint --fix .",
+		"deploy": "yarn build && ./scripts/deploy.sh",
+		"dev": "tsx watch scripts/dev-server.ts",
+		"test:coverage": "rm -rf coverage && vitest run --coverage",
+		"test": "vitest"
+	},
+	"version": "1.0.0",
+	"dependencies": {}
 }

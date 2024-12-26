@@ -10,7 +10,7 @@ const formatTime = (ms: number): string => {
 	if (ms < 1) {
 		return chalk.magenta(`${(ms * 1000).toFixed(2)}µs`);
 	}
-	
+
 	if (ms < 1000) {
 		return chalk.cyan(`${ms.toFixed(2)}ms`);
 	}

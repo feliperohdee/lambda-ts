@@ -15,7 +15,7 @@ import esbuild from 'esbuild';
 				'@': './src'
 			}
 		});
-	} catch (err) {
+	} catch {
 		process.exit(1);
 	}
 })();
