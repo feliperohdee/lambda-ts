@@ -33,9 +33,43 @@ if [[ "$STAGING" == true ]]; then
     DESCRIPTION="${DESCRIPTION} (Staging)"
 fi
 
-# Function to check if Lambda exists
-lambda_exists() {
-    aws lambda get-function --function-name ${FUNCTION_NAME} --region ${REGION} ${PROFILE} &> /dev/null
+# Function to build TypeScript project
+build_project() {
+    echo "Building TypeScript project..."
+    yarn build
+}
+
+# Function to clean up temporary files
+cleanup() {
+    echo "Cleaning up..."
+    rm -f ${ZIP_FILE}
+}
+
+# Function to configure Lambda function
+configure_lambda_function() {
+    echo "Updating Lambda configuration..."
+    aws lambda update-function-configuration \
+        --description "${DESCRIPTION}" \
+        --environment '{
+            "Variables": {
+                "NODE_ENV": "'$(if [[ "$STAGING" == true ]]; then echo "staging"; else echo "production"; fi)'"
+            }
+        }' \
+        --function-name ${FUNCTION_NAME} \
+        --handler ${HANDLER} \
+        --memory-size ${LAMBDA_MEMORY} \
+        --role ${ROLE_ARN} \
+        --runtime ${RUNTIME} \
+        --timeout ${LAMBDA_TIMEOUT} \
+        ${PROFILE}
+}
+
+# Function to create deployment package
+create_deployment_package() {
+    echo "Creating deployment package..."
+    cd dist
+    zip -r ../${ZIP_FILE} .
+    cd ..
 }
 
 # Function to create new Lambda function
@@ -58,23 +92,20 @@ create_lambda_function() {
         ${PROFILE}
 }
 
-# Function to configure Lambda function
-configure_lambda_function() {
-    echo "Updating Lambda configuration..."
-    aws lambda update-function-configuration \
-        --description "${DESCRIPTION}" \
-        --environment '{
-            "Variables": {
-                "NODE_ENV": "'$(if [[ "$STAGING" == true ]]; then echo "staging"; else echo "production"; fi)'"
-            }
-        }' \
-        --function-name ${FUNCTION_NAME} \
-        --handler ${HANDLER} \
-        --memory-size ${LAMBDA_MEMORY} \
-        --role ${ROLE_ARN} \
-        --runtime ${RUNTIME} \
-        --timeout ${LAMBDA_TIMEOUT} \
-        ${PROFILE}
+# Function to deploy Lambda
+deploy_lambda() {
+    if lambda_exists; then
+        echo "Updating existing Lambda function..."
+        update_lambda_code
+    else
+        echo "Creating new Lambda function..."
+        create_lambda_function
+    fi
+}
+
+# Function to check if Lambda exists
+lambda_exists() {
+    aws lambda get-function --function-name ${FUNCTION_NAME} --region ${REGION} ${PROFILE} &> /dev/null
 }
 
 # Function to update Lambda code
@@ -85,37 +116,6 @@ update_lambda_code() {
         --zip-file fileb://${ZIP_FILE} \
         --region ${REGION} \
         ${PROFILE}
-}
-
-# Function to build TypeScript project
-build_project() {
-    echo "Building TypeScript project..."
-    yarn build
-}
-
-# Function to create deployment package
-create_deployment_package() {
-    echo "Creating deployment package..."
-    cd dist
-    zip -r ../${ZIP_FILE} .
-    cd ..
-}
-
-# Function to clean up temporary files
-cleanup() {
-    echo "Cleaning up..."
-    rm -f ${ZIP_FILE}
-}
-
-# Function to deploy Lambda
-deploy_lambda() {
-    if lambda_exists; then
-        echo "Updating existing Lambda function..."
-        update_lambda_code
-    else
-        echo "Creating new Lambda function..."
-        create_lambda_function
-    fi
 }
 
 # Main execution
