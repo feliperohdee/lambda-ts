@@ -21,7 +21,9 @@ do
     	CONFIG_ONLY=true
   	elif [[ "$arg" == "--staging" ]]; then
     	STAGING=true
-  	fi
+	elif [[ "$arg" =~ ^--profile=(.+)$ ]]; then
+        PROFILE="--profile ${BASH_REMATCH[1]}"
+    fi
 done
 
 # Adjust function name and description for staging
@@ -32,7 +34,7 @@ fi
 
 # Function to check if Lambda exists
 lambda_exists() {
-    aws lambda get-function --function-name ${FUNCTION_NAME} --region ${REGION} &> /dev/null
+    aws lambda get-function --function-name ${FUNCTION_NAME} --region ${REGION} ${PROFILE} &> /dev/null
 }
 
 # Function to create new Lambda function
@@ -51,7 +53,8 @@ create_lambda_function() {
         --role ${ROLE_ARN} \
         --runtime ${RUNTIME} \
         --timeout ${LAMBDA_TIMEOUT} \
-        --zip-file fileb://${ZIP_FILE}
+        --zip-file fileb://${ZIP_FILE} \
+		${PROFILE}
 }
 
 # Function to configure Lambda function
@@ -69,7 +72,8 @@ configure_lambda_function() {
         --memory-size ${LAMBDA_MEMORY} \
         --role ${ROLE_ARN} \
         --runtime ${RUNTIME} \
-        --timeout ${LAMBDA_TIMEOUT}
+        --timeout ${LAMBDA_TIMEOUT} \
+		${PROFILE}
 }
 
 # Function to update Lambda code
@@ -78,7 +82,8 @@ update_lambda_code() {
     aws lambda update-function-code \
         --function-name ${FUNCTION_NAME} \
         --zip-file fileb://${ZIP_FILE} \
-        --region ${REGION}
+        --region ${REGION} \
+		${PROFILE}
 }
 
 # Function to build TypeScript project
