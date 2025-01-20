@@ -6,6 +6,7 @@ FUNCTION_NAME="lambda-ts"
 HANDLER="index.handler"
 LAMBDA_MEMORY=128
 LAMBDA_TIMEOUT=30
+PROCESSOR="arm64" # ["x86_64", "arm64"]
 PROFILE=""
 REGION="us-east-1"
 ROLE_ARN="arn:aws:iam::427766509767:role/Lambda"
@@ -76,6 +77,7 @@ create_deployment_package() {
 create_lambda_function() {
     echo "Creating new Lambda function..."
     aws lambda create-function \
+		--architectures "[\"${PROCESSOR}\"]" \
         --description "${DESCRIPTION}" \
         --environment '{
             "Variables": {
@@ -112,6 +114,7 @@ lambda_exists() {
 update_lambda_code() {
     echo "Updating Lambda function code..."
     aws lambda update-function-code \
+		--architectures "[\"${PROCESSOR}\"]" \
         --function-name ${FUNCTION_NAME} \
         --zip-file fileb://${ZIP_FILE} \
         --region ${REGION} \
