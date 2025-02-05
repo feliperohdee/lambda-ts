@@ -20,6 +20,7 @@
 	"scripts": {
 		"build": "rm -rf dist && tsc && node esbuild.config.mjs",
 		"lint": "prettier --write . && eslint --fix .",
+		"logs": "aws logs tail /aws/lambda/lambda-ts --follow",
 		"deploy": "yarn build && ./scripts/deploy.sh",
 		"dev": "tsx watch scripts/dev-server.ts",
 		"test:coverage": "rm -rf coverage && vitest run --coverage",
