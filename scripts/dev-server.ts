@@ -90,7 +90,8 @@ const server = http.createServer(async (req, res) => {
 			const duration = endTime - startTime;
 
 			res.writeHead(response.statusCode!, {
-				'content-type': 'application/json'
+				'content-type': 'application/json',
+				...response.headers
 			});
 
 			const statusColor = response.statusCode! < 400 ? chalk.green : chalk.red;
