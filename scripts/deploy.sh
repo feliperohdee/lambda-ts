@@ -4,6 +4,7 @@
 DESCRIPTION="TypeScript Lambda Function"
 FUNCTION_NAME="lambda-ts"
 HANDLER="index.handler"
+INCLUDE_FILES="."
 LAMBDA_MEMORY=128
 LAMBDA_TIMEOUT=30
 PROCESSOR="arm64" # ["x86_64", "arm64"]
@@ -69,7 +70,7 @@ configure_lambda_function() {
 create_deployment_package() {
     echo "Creating deployment package..."
     cd dist
-    zip -r ../${ZIP_FILE} .
+    zip -r ../${ZIP_FILE} ${INCLUDE_FILES}
     cd ..
 }
 
