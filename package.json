@@ -18,7 +18,7 @@
 	"license": "MIT",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "rm -rf dist && tsc && node esbuild.config.mjs",
+		"build": "rm -rf dist && yarn lint && tsc && node esbuild.config.mjs",
 		"lint": "prettier --write . && eslint --fix .",
 		"logs": "aws logs tail /aws/lambda/lambda-ts --follow",
 		"deploy": "yarn build && ./scripts/deploy.sh",
