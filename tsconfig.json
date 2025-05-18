@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"module": "commonjs",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 		"noEmit": true,
 		"paths": {
 			"@/*": ["./src/*"]
