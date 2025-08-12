@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# | Memory | vCPUs | CPU Ceiling |
+# |--------|-------|-------------|
+# | 832 MB | 2 | 0.50 |
+# | 1769 MB | 2 | 1.00 |
+# | 3008 MB | 2 | 1.67 |
+# | 3009 MB | 3 | 1.70 |
+# | 5307 MB | 3 | 2.39 |
+# | 5308 MB | 4 | 2.67 |
+# | 7076 MB | 4 | 2.84 |
+# | 7077 MB | 5 | 3.86 |
+# | 8845 MB | 5 | 4.23 |
+# | 8846 MB | 6 | 4.48 |
+# | 10240 MB | 6 | 4.72 |
+
 # Configuration
 DESCRIPTION="TypeScript Lambda Function"
 FUNCTION_NAME="lambda-ts"
