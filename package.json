@@ -23,9 +23,9 @@
 		"logs": "aws logs tail /aws/lambda/lambda-ts --follow",
 		"deploy": "yarn build && ./scripts/deploy.sh",
 		"dev": "tsx watch scripts/dev-server.ts",
-		"test:coverage": "rm -rf coverage && vitest run --coverage",
-		"test": "vitest"
+		"test": "vitest --run",
+		"test:coverage": "rm -rf coverage && vitest --coverage --run",
+		"test:watch": "vitest"
 	},
-	"version": "1.0.0",
-	"dependencies": {}
+	"version": "1.0.0"
 }
